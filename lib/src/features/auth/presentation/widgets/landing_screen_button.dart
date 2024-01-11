@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class LandingScreenButton extends StatelessWidget {
   final String text;
-  final Function buttonFunction;
+  final VoidCallback buttonFunction;
   const LandingScreenButton({
     super.key,
     required this.text,
@@ -12,7 +12,9 @@ class LandingScreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => buttonFunction,
+      onPressed: () {
+        buttonFunction();
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF191970),
         minimumSize: const Size(125, 45),

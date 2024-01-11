@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/landing_screen_button.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -32,7 +33,14 @@ class LandingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 LandingScreenButton(text: 'Sign up', buttonFunction: () {}),
-                LandingScreenButton(text: 'Log in', buttonFunction: () {}),
+                LandingScreenButton(
+                    text: 'Log in',
+                    buttonFunction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const SignInScreen()),
+                      );
+                    }),
               ],
             ),
           )
