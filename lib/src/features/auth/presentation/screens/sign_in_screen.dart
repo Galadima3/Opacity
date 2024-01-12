@@ -13,6 +13,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 7.5),
+            const SizedBox(height: 12.5),
             const Text.rich(
                 style: TextStyle(
                   color: Color(0xFF1E1E1E),
@@ -79,7 +80,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       )
                     ])),
 
-            const SizedBox(height: 15.5),
+            const SizedBox(height: 25),
             const FancyButton(
               inputWidget: Text(
                 'Log in',
@@ -96,7 +97,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 )),
                 Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Or log in with"),
+                  child: Text("Or continue with"),
                 ),
                 Expanded(
                   child: Divider(),
