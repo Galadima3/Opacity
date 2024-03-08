@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:opacity/src/features/auth/data/auth_repository.dart';
+import 'package:opacity/src/features/auth/data/auth_checker.dart';
 import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';
 import 'firebase_options.dart';
 import 'package:opacity/src/features/onboarding/onboarding_screen.dart';
@@ -39,33 +39,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const LandingScreen(),
-      home: showHome ? const LandingScreen() : const OnboardingScreen(),
+       home: showHome ? const AuthChecker() : const OnboardingScreen(),
     );
   }
 }
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userDetailsProvider);
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                ref
-                    .read(authRepositoryProvider)
-                    .signOut()
-                    .then((value) => Navigator.of(context).pop());
-              },
-              icon: const Icon(Icons.logout))
-        ],
-      ),
-      body: Center(
-        child: Text('Home Page + ${user!.email}'),
-      ),
-    );
-  }
-}

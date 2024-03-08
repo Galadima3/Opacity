@@ -9,10 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import 'package:email_validator/email_validator.dart';
-import 'package:opacity/main.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/data/auth_repository.dart';
 import 'package:opacity/src/features/auth/data/firestore_repository.dart';
+import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/legal_terms.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart';
 
@@ -51,21 +51,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     try {
       final user =
           await ref.read(authRepositoryProvider).signUp(email, password);
-
-      // Ensure that user is not null before proceeding
       if (user != null) {
-        await ref.read(firestoreRepositoryProvider).storeUserDataInFirestore(
-            email: email,
-            username: username,
-            phoneNumber: phoneNumber,
-            userID: user.uid);
+        await ref
+            .read(firestoreRepositoryProvider)
+            .storeUserDataInFirestore(
+                email: email,
+                username: username,
+                phoneNumber: phoneNumber,
+                userID: user.uid)
+            .then((value) =>
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) {
+                    return const HomeScreen();
+                  },
+                )));
       }
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) {
-          return const HomeScreen();
-        },
-      ));
-
       return user;
     } catch (e) {
       showDialog(
@@ -87,7 +87,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         },
       );
       log("Error during registration: $e");
-
       return null; // Return null in case of an error
     } finally {
       setState(() => isLoading = false);
