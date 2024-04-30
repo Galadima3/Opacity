@@ -14,6 +14,7 @@ migrate_working_dir/
 *.iml
 *.ipr
 *.iws
+*.env
 .idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
@@ -33,6 +34,8 @@ migrate_working_dir/
 /linux/
 /macos/
 /windows/
+/lib/env/
+firebase.json
 
 # Symbolication related
 app.*.symbols

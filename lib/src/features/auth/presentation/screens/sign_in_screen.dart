@@ -4,11 +4,14 @@ import "dart:developer";
 
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import "package:opacity/src/common_widgets/fancy_button.dart";
 import "package:opacity/src/features/auth/data/auth_repository.dart";
+import "package:opacity/src/features/auth/data/supabase_auth_repository.dart";
 import "package:opacity/src/features/auth/presentation/screens/home_screen.dart";
+import "package:opacity/src/features/auth/presentation/screens/register_screen.dart";
 
 import "package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart";
 
@@ -24,6 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
   bool isLoading = false;
+  final supa = SupabaseAuthRepository();
 
   Future<User?> onLoginSubmit({
     required WidgetRef ref,
@@ -119,34 +123,42 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 12.5),
-              const Text.rich(
-                  style: TextStyle(
-                    color: Color(0xFF1E1E1E),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    height: 0,
-                    letterSpacing: 0.80,
-                  ),
-                  TextSpan(
-                      text: 'Don\'t have an account?',
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: ' Sign up',
-                          style: TextStyle(
-                            color: Color(0xFF191970),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ])),
+              GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return RegisterScreen();
+                },)),
+                child: const Text.rich(
+                    style: TextStyle(
+                      color: Color(0xFF1E1E1E),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.80,
+                    ),
+                    TextSpan(
+                        text: 'Don\'t have an account?',
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: ' Sign up',
+                            style: TextStyle(
+                              color: Color(0xFF191970),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ])),
+              ),
 
               const SizedBox(height: 25),
               Consumer(
                 builder: (context, ref, child) {
                   return GestureDetector(
-                    onTap: () => onLoginSubmit(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        ref: ref),
+                    onTap: ()=> supa.signInEmailAndPassword(emailController.text, passwordController.text).then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+                      return HomeScreen();
+                    },))),
+                    // onTap: () => onLoginSubmit(
+                    //     email: emailController.text,
+                    //     password: passwordController.text,
+                    //     ref: ref),
                     child: FancyButton(
                       inputWidget: isLoading
                           ? Transform.scale(

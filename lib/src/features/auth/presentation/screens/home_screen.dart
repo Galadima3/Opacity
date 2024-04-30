@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:opacity/src/features/auth/data/auth_repository.dart';
+import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
 import 'package:opacity/src/features/kyc_feature/presentation/kyc_screen.dart';
 import 'package:opacity/src/utils/expandable_fab.dart';
 
@@ -10,6 +11,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final supa = SupabaseAuthRepository();
     final user = ref.read(userDetailsProvider);
     return Scaffold(
       floatingActionButton: ExpandableFab(
@@ -20,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
             child: const Icon(Icons.badge),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return KYCScreen();
+                return const KYCScreen();
               },));
             },
           ),
@@ -41,16 +43,18 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                ref
-                    .read(authRepositoryProvider)
-                    .signOut()
-                    .then((value) => Navigator.of(context).pop());
+                supa.signOut().then((value) => Navigator.pop(context));
+                // ref
+                //     .read(authRepositoryProvider)
+                //     .signOut()
+                //     .then((value) => Navigator.of(context).pop());
               },
               icon: const Icon(Icons.logout))
         ],
       ),
       body: Center(
-        child: Text('Home Page + ${user!.email}'),
+        // child: Text('Home Page + ${user!.email}'),
+        child: Text('Home Page + '),
       ),
     );
   }

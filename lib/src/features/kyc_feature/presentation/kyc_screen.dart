@@ -12,7 +12,7 @@ class _KYCScreenState extends State<KYCScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
+        children: const [
           Text('data')
         ],
       ));

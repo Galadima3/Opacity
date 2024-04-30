@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -12,7 +13,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/data/auth_repository.dart';
 import 'package:opacity/src/features/auth/data/firestore_repository.dart';
+import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
 import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart';
+import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/legal_terms.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart';
 
@@ -30,7 +33,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final phoneNumberController = TextEditingController();
   String phoneNumber = '';
   bool isLoading = false;
-
+  var supabaseObj = SupabaseAuthRepository();
   @override
   void dispose() {
     emailController.dispose();
@@ -102,11 +105,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //email
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: .0, horizontal: 15),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
@@ -187,31 +190,43 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
               ),
             ),
-            const Text.rich(
-                style: TextStyle(
-                  color: Color(0xFF1E1E1E),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.80,
-                ),
-                TextSpan(text: 'Registered already?', children: <InlineSpan>[
-                  TextSpan(
-                    text: ' Sign in',
-                    style: TextStyle(
-                      color: Color(0xFF191970),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ])),
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => SignInScreen(),
+              )),
+              child: const Text.rich(
+                  style: TextStyle(
+                    color: Color(0xFF1E1E1E),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.80,
+                  ),
+                  TextSpan(text: 'Registered already?', children: <InlineSpan>[
+                    TextSpan(
+                      text: ' Sign in',
+                      style: TextStyle(
+                        color: Color(0xFF191970),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ])),
+            ),
 
             const SizedBox(height: 15.5),
             GestureDetector(
-              onTap: () => onRegisterSubmit(
-                  email: emailController.text,
-                  password: passwordController.text,
-                  phoneNumber: phoneNumber,
-                  username: usernameController.text,
-                  ref: ref),
+              onTap: () => supabaseObj.signUpEmailAndPassword(
+                  emailController.text,
+                  passwordController.text,
+                  phoneNumber,
+                  usernameController.text).then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+                    return HomeScreen();
+                  },))),
+              // onTap: () => onRegisterSubmit(
+              //     email: emailController.text,
+              //     password: passwordController.text,
+              //     phoneNumber: phoneNumber,
+              //     username: usernameController.text,
+              //     ref: ref),
               child: FancyButton(
                 inputWidget: isLoading
                     ? Transform.scale(
@@ -249,10 +264,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 SignInIcon(imageUrl: 'assets/images/apple.png'),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
-              child: SizedBox(height: 50, child: LegalTerms()),
-            )
           ],
         ),
       ),

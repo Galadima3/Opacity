@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -71,10 +68,20 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCHiXkmwahk75GuRDyezUUDbG_HkuzzgfU',
-    appId: '1:41303225217:ios:b55b3c3df0a0ed7d6cee80',
+    appId: '1:41303225217:ios:da3c0a343b17dcfe6cee80',
     messagingSenderId: '41303225217',
     projectId: 'mylez-opacity-app',
     storageBucket: 'mylez-opacity-app.appspot.com',
-    iosBundleId: 'com.example.opacity.RunnerTests',
+    iosBundleId: 'com.example.opacity',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyArG4Tbfewqs9ZA0GsrvA6zTAxkaZnsyCk',
+    appId: '1:41303225217:web:3c21474789bf54c86cee80',
+    messagingSenderId: '41303225217',
+    projectId: 'mylez-opacity-app',
+    authDomain: 'mylez-opacity-app.firebaseapp.com',
+    storageBucket: 'mylez-opacity-app.appspot.com',
+  );
+
 }
