@@ -47,14 +47,14 @@ class HomeScreen extends ConsumerWidget {
                     .read(supabaseAuthProvider)
                     .signOut()
                     .then((_) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-                      return SignInScreen();
+                      return const SignInScreen();
                     },)));
               },
               icon: const Icon(Icons.logout))
         ],
       ),
       body: Center(
-        child: Text('Home Page + ${user?.email ?? "Unavailable"}'),
+        child: Text('Home Page + ${user?.userMetadata?['displayName'] ?? "Unavailable"}'),
       ),
     );
   }

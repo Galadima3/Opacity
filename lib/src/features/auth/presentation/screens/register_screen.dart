@@ -52,7 +52,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       displayName: username,
       phoneNumber: phoneNumber,
     );
-
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -60,7 +59,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
       );
     }
-
     return user;
   } catch (e) {
     log("Registration Error: $e");
@@ -184,7 +182,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
             GestureDetector(
               onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SignInScreen(),
+                builder: (context) => const SignInScreen(),
               )),
               child: const Text.rich(
                   style: TextStyle(
