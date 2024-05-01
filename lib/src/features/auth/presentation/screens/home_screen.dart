@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:opacity/src/features/auth/data/auth_repository.dart';
 import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
+import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/kyc_feature/presentation/kyc_screen.dart';
 import 'package:opacity/src/utils/expandable_fab.dart';
 
@@ -11,8 +10,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supa = SupabaseAuthRepository();
-    final user = ref.read(userDetailsProvider);
+    final user = ref.watch(userDetailsProvider);
     return Scaffold(
       floatingActionButton: ExpandableFab(
         distance: 100,
@@ -21,9 +19,11 @@ class HomeScreen extends ConsumerWidget {
             heroTag: null,
             child: const Icon(Icons.badge),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return const KYCScreen();
-              },));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return const KYCScreen();
+                },
+              ));
             },
           ),
           FloatingActionButton.small(
@@ -43,18 +43,18 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                supa.signOut().then((value) => Navigator.pop(context));
-                // ref
-                //     .read(authRepositoryProvider)
-                //     .signOut()
-                //     .then((value) => Navigator.of(context).pop());
+                ref
+                    .read(supabaseAuthProvider)
+                    .signOut()
+                    .then((_) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+                      return SignInScreen();
+                    },)));
               },
               icon: const Icon(Icons.logout))
         ],
       ),
       body: Center(
-        // child: Text('Home Page + ${user!.email}'),
-        child: Text('Home Page + '),
+        child: Text('Home Page + ${user?.email ?? "Unavailable"}'),
       ),
     );
   }

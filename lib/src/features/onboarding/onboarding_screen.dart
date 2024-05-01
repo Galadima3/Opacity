@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';

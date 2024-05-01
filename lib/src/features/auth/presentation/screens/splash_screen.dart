@@ -14,23 +14,32 @@ class _SplashScreenState extends State<SplashScreen> {
   final vizier = Supabase.instance.client.auth.currentSession;
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 1500)).then((value){
-      vizier?.user == null ? Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-        return const SignInScreen();
-      },)) : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-        return const HomeScreen();
-      },));
-    });
     super.initState();
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      final session = Supabase.instance.client.auth.currentSession;
+
+      if (session == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const SignInScreen()),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
-        child: Icon(
-          Icons.flutter_dash,
-          size: 40,
-        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 65, right: 10),
+          child: Image.asset('assets/images/trackpro.png'),
+        )
       ),
     );
   }

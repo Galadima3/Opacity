@@ -1,28 +1,29 @@
 import 'dart:developer';
-
 import 'package:opacity/src/features/auth/data/auth_interface.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SupabaseAuthRepository implements AuthInterface {
   final Supabase _supabase = Supabase.instance;
-  
+
+  //getter
+  User? get userDetails => _supabase.client.auth.currentUser;
+
   @override
-  Future<User?> signInEmailAndPassword(String email, String password) async {
+  Future<User?> signInEmailAndPassword(
+      {required String email, required String password}) async {
     try {
       final response = await _supabase.client.auth
           .signInWithPassword(password: password, email: email);
       return response.user;
     } catch (e) {
-      // Handle sign in errors here
       if (e is AuthException) {
-        // You can access specific Supabase error messages here
-        log(e.message); // Example: print error message to console
+        log(e.message);
       } else {
-        // Handle other types of exceptions
-        log("An unexpected error occurred: $e"); // Example: generic error message
+        log("An unexpected error occurred: $e");
       }
     }
-    return null; // Indicate sign in failure if there's an exception
+    return null;
   }
 
   @override
@@ -31,8 +32,11 @@ class SupabaseAuthRepository implements AuthInterface {
   }
 
   @override
-  Future<AuthResponse?> signUpEmailAndPassword(String email, String password,
-      String phoneNumber, String displayName) async {
+  Future<AuthResponse?> signUpEmailAndPassword(
+      {required String email,
+      required String password,
+      required String phoneNumber,
+      required String displayName}) async {
     try {
       final rex = await _supabase.client.auth
           .signUp(password: password, email: email, data: {
@@ -41,15 +45,19 @@ class SupabaseAuthRepository implements AuthInterface {
       });
       return rex;
     } catch (e) {
-      // Handle sign in errors here
       if (e is AuthException) {
-        // You can access specific Supabase error messages here
-        log(e.message); // Example: print error message to console
+        log(e.message);
       } else {
-        // Handle other types of exceptions
-        log("An unexpected error occurred: $e"); // Example: generic error message
+        log("An unexpected error occurred: $e");
       }
     }
     return null;
   }
 }
+
+final supabaseAuthProvider = Provider<SupabaseAuthRepository>((ref) {
+  return SupabaseAuthRepository();
+});
+final userDetailsProvider = Provider.autoDispose<User?>((ref) {
+  return ref.read(supabaseAuthProvider).userDetails;
+});

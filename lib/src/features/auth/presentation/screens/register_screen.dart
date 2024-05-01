@@ -1,23 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:intl_phone_field/intl_phone_field.dart';
-
 import 'package:email_validator/email_validator.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
-import 'package:opacity/src/features/auth/data/auth_repository.dart';
-import 'package:opacity/src/features/auth/data/firestore_repository.dart';
 import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
 import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart';
 import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:opacity/src/features/auth/presentation/widgets/legal_terms.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -33,7 +26,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final phoneNumberController = TextEditingController();
   String phoneNumber = '';
   bool isLoading = false;
-  var supabaseObj = SupabaseAuthRepository();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -43,58 +36,57 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     super.dispose();
   }
 
-  Future<User?> onRegisterSubmit({
-    required WidgetRef ref,
-    required String email,
-    required String password,
-    required String username,
-    required String phoneNumber,
-  }) async {
+  Future<AuthResponse?> onRegisterSubmit({
+  required WidgetRef ref,
+  required String email,
+  required String password,
+  required String username,
+  required String phoneNumber,
+}) async {
+  try {
     setState(() => isLoading = true);
-    try {
-      final user =
-          await ref.read(authRepositoryProvider).signUp(email, password);
-      if (user != null) {
-        await ref
-            .read(firestoreRepositoryProvider)
-            .storeUserDataInFirestore(
-                email: email,
-                username: username,
-                phoneNumber: phoneNumber,
-                userID: user.uid)
-            .then((value) =>
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
-                )));
-      }
-      return user;
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Error"),
-            content: const Text(
-                "An error occurred during registration. Please try again."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("OK"),
-              ),
-            ],
-          );
-        },
+
+    final user = await ref.read(supabaseAuthProvider).signUpEmailAndPassword(
+      email: email,
+      password: password,
+      displayName: username,
+      phoneNumber: phoneNumber,
+    );
+
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
       );
-      log("Error during registration: $e");
-      return null; // Return null in case of an error
-    } finally {
-      setState(() => isLoading = false);
     }
+
+    return user;
+  } catch (e) {
+    log("Registration Error: $e");
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text("An error occurred during registration. Please try again. ${e.toString()}"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+    return null; // Return null in case of an error
+  } finally {
+    setState(() => isLoading = false);
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -214,19 +206,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
             const SizedBox(height: 15.5),
             GestureDetector(
-              onTap: () => supabaseObj.signUpEmailAndPassword(
-                  emailController.text,
-                  passwordController.text,
-                  phoneNumber,
-                  usernameController.text).then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  },))),
-              // onTap: () => onRegisterSubmit(
-              //     email: emailController.text,
-              //     password: passwordController.text,
-              //     phoneNumber: phoneNumber,
-              //     username: usernameController.text,
-              //     ref: ref),
+              onTap: () => onRegisterSubmit(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  phoneNumber: phoneNumber,
+                  username: usernameController.text,
+                  ref: ref),
               child: FancyButton(
                 inputWidget: isLoading
                     ? Transform.scale(
