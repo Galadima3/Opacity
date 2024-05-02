@@ -1,10 +1,11 @@
 import 'dart:developer';
-
 import 'package:email_validator/email_validator.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:opacity/src/features/kyc_feature/presentation/widgets/kyc_button.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 
 class KYCScreen extends StatefulWidget {
   const KYCScreen({super.key});
@@ -27,7 +28,6 @@ class _KYCScreenState extends State<KYCScreen> {
     nameController.dispose();
     emailController.dispose();
     phoneNumberController.dispose();
-    nameController.dispose();
     addressController.dispose();
   }
 
@@ -124,22 +124,13 @@ class _KYCScreenState extends State<KYCScreen> {
             ),
 
             //Button
-            Center(
-              child: Container(
-                height: 60,
-                width: 378,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4A0084),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child:  Center(
-                  child: Text(
-                    "Next",
-                    style: TextStyle(fontSize: 20.sp, color: Colors.white),
-                  ),
-                ),
-              ),
-            ).withPadding(const EdgeInsets.only(top: 20))
+            GestureDetector(
+              onTap: () =>
+                  context.pushNamed(RoutePaths.proofofIdentityScreenRoute),
+              child: const KYCButton(
+                text: "Next",
+              ).withPadding(const EdgeInsets.only(top: 20)),
+            )
           ],
         ),
       ),
@@ -147,11 +138,13 @@ class _KYCScreenState extends State<KYCScreen> {
   }
 }
 
+
+
 extension CustomPadding on Widget {
   Widget withPadding(EdgeInsets padding) {
     return Padding(
       padding: padding,
-      child: this, 
+      child: this,
     );
   }
 }

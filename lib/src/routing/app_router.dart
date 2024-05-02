@@ -4,7 +4,9 @@ import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart'
 import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';
 import 'package:opacity/src/features/auth/presentation/screens/register_screen.dart';
 import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:opacity/src/features/kyc_feature/presentation/kyc_screen.dart';
+import 'package:opacity/src/features/kyc_feature/presentation/screens/bank_details_screen.dart';
+import 'package:opacity/src/features/kyc_feature/presentation/screens/kyc_screen.dart';
+import 'package:opacity/src/features/kyc_feature/presentation/screens/proof_of_identity.dart';
 import 'package:opacity/src/routing/route_paths.dart';
 
 // GoRouter configuration
@@ -40,6 +42,16 @@ final appRouter = GoRouter(
       name: RoutePaths.landingScreenRoute,
       path: '/${RoutePaths.landingScreenRoute}',
       builder: (context, state) => const LandingScreen(),
+    ),
+    GoRoute(
+      name: RoutePaths.proofofIdentityScreenRoute,
+      path: '/${RoutePaths.proofofIdentityScreenRoute}',
+      builder: (context, state) => const ProofOfIdentity(),
+    ),
+    GoRoute(
+      name: RoutePaths.bankDetailsScreenRoute,
+      path: '/${RoutePaths.bankDetailsScreenRoute}',
+      builder: (context, state) => const BankDetailsScreen(),
     ),
 
   ],

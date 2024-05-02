@@ -9,8 +9,6 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
-
-import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/error_alert.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart';
 import 'package:opacity/src/routing/route_paths.dart';

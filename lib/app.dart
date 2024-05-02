@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opacity/src/features/onboarding/onboarding_screen.dart';
+import 'package:opacity/src/common_widgets/onboarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/features/auth/presentation/screens/splash_screen.dart';

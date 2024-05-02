@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
-import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';
+
 import 'package:opacity/src/routing/route_paths.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

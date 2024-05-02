@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:opacity/src/features/auth/presentation/screens/register_screen.dart';
-
-import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/landing_screen_button.dart';
 import 'package:opacity/src/routing/route_paths.dart';
 
@@ -18,18 +16,18 @@ class LandingScreen extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 65, right: 10, top: 50),
               child: Image.asset("assets/images/trackpro.png")),
-          const Text(
+           Text(
             'TrackPro',
             style: TextStyle(
-              color: Color(0xFF191970),
-              fontSize: 36,
+              color: const Color(0xFF191970),
+              fontSize: 36.sp,
               fontStyle: FontStyle.italic,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(
-            height: 100,
+          SizedBox(
+            height: 100.h,
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
