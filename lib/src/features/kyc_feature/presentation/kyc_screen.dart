@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class KYCScreen extends StatefulWidget {
   const KYCScreen({super.key});
@@ -40,38 +42,42 @@ class _KYCScreenState extends State<KYCScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Step 1 of 3',
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15.sp),
             ).withPadding(const EdgeInsets.symmetric(horizontal: 10)),
-            const Text(
+            Text(
               'Personal Details',
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w600),
             ).withPadding(
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
             //Name
-            TextField(
+            TextFormField(
               controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
             ).withPadding(
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
             ),
             //Email
-            TextField(
+            TextFormField(
               controller: emailController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) => EmailValidator.validate(value!)
+                  ? null
+                  : "Please enter a valid email",
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
             ).withPadding(
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
             ),
             //Phone Number
             TextField(
@@ -79,11 +85,11 @@ class _KYCScreenState extends State<KYCScreen> {
               decoration: InputDecoration(
                 labelText: 'Phone Number',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
             ).withPadding(
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,15 +116,30 @@ class _KYCScreenState extends State<KYCScreen> {
               decoration: InputDecoration(
                 labelText: 'Address',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
             ).withPadding(
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
             ),
 
             //Button
-            Center(child: ElevatedButton(onPressed: (){}, child: const Text("Next"),))
+            Center(
+              child: Container(
+                height: 60,
+                width: 378,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4A0084),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child:  Center(
+                  child: Text(
+                    "Next",
+                    style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                  ),
+                ),
+              ),
+            ).withPadding(const EdgeInsets.only(top: 20))
           ],
         ),
       ),
@@ -130,7 +151,7 @@ extension CustomPadding on Widget {
   Widget withPadding(EdgeInsets padding) {
     return Padding(
       padding: padding,
-      child: this, // Reference the original widget
+      child: this, 
     );
   }
 }

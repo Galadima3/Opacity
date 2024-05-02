@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart';
-import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,13 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
       final session = Supabase.instance.client.auth.currentSession;
 
       if (session == null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const SignInScreen()),
-        );
+        context.pushReplacementNamed(RoutePaths.loginScreenRoute);
       } else {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        context.pushReplacementNamed(RoutePaths.homeScreenRoute);
       }
     });
   }
@@ -36,11 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 65, right: 10),
-          child: Image.asset('assets/images/trackpro.png'),
-        )
-      ),
+          child: Padding(
+        padding: const EdgeInsets.only(left: 65, right: 10),
+        child: Image.asset(
+          'assets/images/trackpro.png',
+          height: 360.h,
+          width: 324.w,
+        ),
+      )),
     );
   }
 }

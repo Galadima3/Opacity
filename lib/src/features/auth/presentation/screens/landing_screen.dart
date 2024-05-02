@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:opacity/src/features/auth/presentation/screens/register_screen.dart';
 
 import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/landing_screen_button.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
@@ -36,18 +38,12 @@ class LandingScreen extends StatelessWidget {
               children: [
                 LandingScreenButton(
                     text: 'Sign up',
-                    buttonFunction: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterScreen()),
-                        )),
+                    buttonFunction: () =>
+                        context.pushNamed(RoutePaths.registerScreenRoute)),
                 LandingScreenButton(
                     text: 'Log in',
-                    buttonFunction: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const SignInScreen()),
-                      );
-                    }),
+                    buttonFunction: () =>
+                        context.pushNamed(RoutePaths.loginScreenRoute)),
               ],
             ),
           )

@@ -3,13 +3,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/data/supabase_auth_repository.dart';
-import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart';
+
 import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:opacity/src/features/auth/presentation/widgets/error_alert.dart';
 import 'package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -37,54 +41,38 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<AuthResponse?> onRegisterSubmit({
-  required WidgetRef ref,
-  required String email,
-  required String password,
-  required String username,
-  required String phoneNumber,
-}) async {
-  try {
-    setState(() => isLoading = true);
+    required WidgetRef ref,
+    required String email,
+    required String password,
+    required String username,
+    required String phoneNumber,
+  }) async {
+    try {
+      setState(() => isLoading = true);
 
-    final user = await ref.read(supabaseAuthProvider).signUpEmailAndPassword(
-      email: email,
-      password: password,
-      displayName: username,
-      phoneNumber: phoneNumber,
-    );
-    if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
+      final user = await ref.read(supabaseAuthProvider).signUpEmailAndPassword(
+            email: email,
+            password: password,
+            displayName: username,
+            phoneNumber: phoneNumber,
+          );
+      if (user != null) {
+        context.pushReplacementNamed(RoutePaths.homeScreenRoute);
+      }
+      return user;
+    } catch (e) {
+      log("Registration Error: $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomAlert(e: e);
+        },
       );
+      return null;
+    } finally {
+      setState(() => isLoading = false);
     }
-    return user;
-  } catch (e) {
-    log("Registration Error: $e");
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Error"),
-          content: Text("An error occurred during registration. Please try again. ${e.toString()}"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-    return null; // Return null in case of an error
-  } finally {
-    setState(() => isLoading = false);
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -175,34 +163,34 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   hintText: 'Password',
                   prefixIcon: const Icon(Icons.password),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
               ),
             ),
             GestureDetector(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SignInScreen(),
-              )),
-              child: const Text.rich(
+              onTap: () => context.pushNamed(RoutePaths.loginScreenRoute),
+              child: Text.rich(
                   style: TextStyle(
-                    color: Color(0xFF1E1E1E),
-                    fontSize: 16,
+                    color: const Color(0xFF1E1E1E),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.80,
                   ),
-                  TextSpan(text: 'Registered already?', children: <InlineSpan>[
-                    TextSpan(
-                      text: ' Sign in',
-                      style: TextStyle(
-                        color: Color(0xFF191970),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ])),
+                  const TextSpan(
+                      text: 'Registered already?',
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' Sign in',
+                          style: TextStyle(
+                            color: Color(0xFF191970),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ])),
             ),
 
-            const SizedBox(height: 15.5),
+            SizedBox(height: 15.5.h),
             GestureDetector(
               onTap: () => onRegisterSubmit(
                   email: emailController.text,
@@ -217,13 +205,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: const CircularProgressIndicator.adaptive(
                             backgroundColor: Colors.white),
                       )
-                    : const Text(
+                    : Text(
                         'Sign up',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
                       ),
               ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: 15.h),
             //Divider
             const Row(
               children: <Widget>[

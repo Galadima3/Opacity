@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LandingScreenButton extends StatelessWidget {
   final String text;
@@ -19,14 +20,14 @@ class LandingScreenButton extends StatelessWidget {
         backgroundColor: const Color(0xFF191970),
         minimumSize: const Size(125, 45),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 16,
+          fontSize: 16.sp,
         ),
       ),
     );

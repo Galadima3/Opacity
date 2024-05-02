@@ -3,11 +3,15 @@ import "dart:developer";
 
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:go_router/go_router.dart";
 import "package:opacity/src/common_widgets/fancy_button.dart";
 import "package:opacity/src/features/auth/data/supabase_auth_repository.dart";
 import "package:opacity/src/features/auth/presentation/screens/home_screen.dart";
 import "package:opacity/src/features/auth/presentation/screens/register_screen.dart";
+import "package:opacity/src/features/auth/presentation/widgets/error_alert.dart";
 import "package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart";
+import "package:opacity/src/routing/route_paths.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 
 class SignInScreen extends StatefulWidget {
@@ -37,11 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   password: password,
                 );
         if (user != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-          );
+          context.pushReplacementNamed(RoutePaths.homeScreenRoute);
         }
         return user;
       }
@@ -50,24 +50,13 @@ class _SignInScreenState extends State<SignInScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("An error occurred during Sign in."),
-            content: Text(e.toString()),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("OK"),
-              ),
-            ],
-          );
+          return CustomAlert(e: e);
         },
       );
     } finally {
       setState(() => isLoading = false);
     }
-    return null; // Return null if validation fails or in case of an error
+    return null;
   }
 
   @override
@@ -117,22 +106,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12.5),
+              SizedBox(height: 12.5.h),
               GestureDetector(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return const RegisterScreen();
-                  },
-                )),
-                child: const Text.rich(
+                onTap: () => context.pushNamed(RoutePaths.registerScreenRoute),
+                child: Text.rich(
                     style: TextStyle(
-                      color: Color(0xFF1E1E1E),
-                      fontSize: 16,
+                      color: const Color(0xFF1E1E1E),
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       height: 0,
                       letterSpacing: 0.80,
                     ),
-                    TextSpan(
+                    const TextSpan(
                         text: 'Don\'t have an account?',
                         children: <InlineSpan>[
                           TextSpan(
@@ -145,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ])),
               ),
 
-              const SizedBox(height: 25),
+              SizedBox(height: 25.h),
               Consumer(
                 builder: (context, ref, child) {
                   return GestureDetector(
@@ -161,16 +146,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 backgroundColor: Colors.white,
                               ),
                             )
-                          : const Text(
+                          :  Text(
                               'Log in',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                                  TextStyle(color: Colors.white, fontSize: 16.sp),
                             ),
                     ),
                   );
                 },
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 15.h),
               //Divider
               const Row(
                 children: <Widget>[

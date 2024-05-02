@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:opacity/app.dart';
 import 'package:opacity/env/env.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:opacity/src/routing/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -13,32 +13,34 @@ void main() async {
     anonKey: Env.apiKey,
   );
 
-  final prefs = await SharedPreferences.getInstance();
-  final showHome = prefs.getBool('showHome') ?? false;
-
-//TODO: Complete Auth Functionality
-  runApp(ProviderScope(
-    child: MyApp(
-      showHome: showHome,
-    ),
+  runApp(const ProviderScope(
+    child: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final bool showHome;
-  const MyApp({super.key, required this.showHome});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Opacity',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: GoogleFonts.urbanist().fontFamily,
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF191970)),
-          useMaterial3: true,
-        ),
-        home: App(showHome: showHome));
+    return ScreenUtilInit(
+      designSize: const Size(411, 867),
+      minTextAdapt: false,
+      builder: (context, child) {
+        return MaterialApp.router(
+          title: 'Opacity',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.urbanist().fontFamily,
+            colorScheme:
+                ColorScheme.fromSeed(seedColor: const Color(0xFF191970)),
+            useMaterial3: true,
+          ),
+          routerConfig: appRouter,
+        );
+        //home: const App());
+      },
+    );
   }
 }

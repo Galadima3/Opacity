@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:opacity/src/common_widgets/fancy_button.dart';
 import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -67,12 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               final prefs = await SharedPreferences.getInstance();
               prefs.setBool('showHome', true);
               if (!mounted) return;
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LandingScreen(),
-                ),
-              );
+              context.pushReplacementNamed(RoutePaths.landingScreenRoute);
             },
             child: const FancyButton(
               inputWidget: Row(
