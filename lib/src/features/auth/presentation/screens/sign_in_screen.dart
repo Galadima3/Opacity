@@ -12,6 +12,8 @@ import "package:opacity/src/features/auth/presentation/widgets/sign_in_icon.dart
 import "package:opacity/src/routing/route_paths.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 
+final visibilityProvider = StateProvider<bool>((ref) => true);
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -59,6 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Build object called");
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -88,21 +91,31 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                child: TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.visiblePassword,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    prefixIcon: const Icon(Icons.password),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+              Consumer(
+                builder: (context, ref, child) {
+                  final isVisible = ref.watch(visibilityProvider);
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    child: TextFormField(
+                      obscureText: isVisible,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                            onPressed: () =>
+                                ref.read(visibilityProvider.notifier).state = !isVisible,
+                            icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility)),
+                        prefixIcon: const Icon(Icons.password),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               SizedBox(height: 12.5.h),
               GestureDetector(
@@ -144,10 +157,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 backgroundColor: Colors.white,
                               ),
                             )
-                          :  Text(
+                          : Text(
                               'Log in',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16.sp),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.sp),
                             ),
                     ),
                   );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -22,13 +22,19 @@ class _ProofOfIdentityState extends ConsumerState<ProofOfIdentity> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Upload KYC"),
-        centerTitle: true,
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+              height: 40.h,
+            ),
+            Text(
+              "Upload KYC",
+              style: TextStyle(
+                fontSize: 30.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ).withPadding(const EdgeInsets.fromLTRB(10, 0, 0, 10)),
           Text(
             'Step 2 of 3',
             style: TextStyle(fontSize: 15.sp),
@@ -37,7 +43,7 @@ class _ProofOfIdentityState extends ConsumerState<ProofOfIdentity> {
             'Proof of Identity',
             style: TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w600),
           ).withPadding(
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
+              const EdgeInsets.symmetric(horizontal: 10)),
 
           //RadioListTile Widget
           //Option 1
@@ -117,7 +123,9 @@ class _ProofOfIdentityState extends ConsumerState<ProofOfIdentity> {
           SizedBox(
             height: height * 0.225.h,
           ),
-          GestureDetector(onTap: () => context.pushNamed(RoutePaths.bankDetailsScreenRoute), child: const KYCButton(text: "Next"))
+          GestureDetector(
+              onTap: () => context.pushNamed(RoutePaths.bankDetailsScreenRoute),
+              child: const KYCButton(text: "Next"))
         ],
       ),
     );

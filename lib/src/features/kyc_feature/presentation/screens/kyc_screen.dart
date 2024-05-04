@@ -4,6 +4,7 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:opacity/src/features/kyc_feature/presentation/widgets/kyc_button.dart';
 import 'package:opacity/src/routing/route_paths.dart';
 
@@ -34,14 +35,24 @@ class _KYCScreenState extends State<KYCScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Upload KYC"),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: const Text(""),
+      //   //centerTitle: true,
+      // ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 40.h,
+            ),
+            Text(
+              "Upload KYC",
+              style: TextStyle(
+                fontSize: 30.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ).withPadding(const EdgeInsets.fromLTRB(10, 0, 0, 10)),
             Text(
               'Step 1 of 3',
               style: TextStyle(fontSize: 15.sp),
@@ -49,8 +60,7 @@ class _KYCScreenState extends State<KYCScreen> {
             Text(
               'Personal Details',
               style: TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w600),
-            ).withPadding(
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
+            ).withPadding(const EdgeInsets.symmetric(horizontal: 10)),
             //Name
             TextFormField(
               controller: nameController,
@@ -137,8 +147,6 @@ class _KYCScreenState extends State<KYCScreen> {
     );
   }
 }
-
-
 
 extension CustomPadding on Widget {
   Widget withPadding(EdgeInsets padding) {

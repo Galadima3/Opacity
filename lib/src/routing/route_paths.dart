@@ -7,4 +7,6 @@ class RoutePaths {
   static String kycScreenRoute = 'kyc-screen-route';
   static String proofofIdentityScreenRoute = 'proofofIdentity-screen-route';
   static String bankDetailsScreenRoute = 'bankdetails-screen-route';
+  static String checkoutScreenRoute = 'checkout-screen-route';
+  static String paymentScreenRoute = 'payment-screen-route';
 }

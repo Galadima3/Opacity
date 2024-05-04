@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
           FloatingActionButton.small(
             heroTag: null,
             child: const Icon(Icons.shopping_cart),
-            onPressed: () {},
+            onPressed: () => context.pushNamed(RoutePaths.checkoutScreenRoute),
           ),
         ],
       ),
