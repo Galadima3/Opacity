@@ -63,7 +63,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomAlert(e: e);
+          return CustomAlert(
+            e: e,
+            ctx: context,
+          );
         },
       );
       return null;

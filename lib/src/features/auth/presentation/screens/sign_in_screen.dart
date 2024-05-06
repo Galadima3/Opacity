@@ -42,6 +42,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 );
         if (user != null) {
           context.pushReplacementNamed(RoutePaths.homeScreenRoute);
+        } else {
+          throw Exception("Something went wrong!");
         }
         return user;
       }
@@ -50,7 +52,10 @@ class _SignInScreenState extends State<SignInScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomAlert(e: e);
+          return CustomAlert(
+            e: e,
+            ctx: context,
+          );
         },
       );
     } finally {
@@ -61,7 +66,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build object called");
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -105,9 +109,12 @@ class _SignInScreenState extends State<SignInScreen> {
                       decoration: InputDecoration(
                         hintText: 'Password',
                         suffixIcon: IconButton(
-                            onPressed: () =>
-                                ref.read(visibilityProvider.notifier).state = !isVisible,
-                            icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility)),
+                            onPressed: () => ref
+                                .read(visibilityProvider.notifier)
+                                .state = !isVisible,
+                            icon: Icon(isVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility)),
                         prefixIcon: const Icon(Icons.password),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),

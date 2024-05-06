@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:opacity/src/constants/image_url.dart';
+import 'package:opacity/src/features/checkout/presentation/widgets/fancy_row_widget.dart';
+import 'package:opacity/src/features/checkout/presentation/widgets/shop_button.dart';
+import 'package:opacity/src/features/checkout/presentation/widgets/shop_item_widget.dart';
+import 'package:opacity/src/features/kyc_feature/presentation/screens/kyc_screen.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -25,8 +30,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             onPressed: () => context.pop()),
       ),
       body: Column(
-        //
-
         children: [
           const FancyRowWidget(
             labelText: "Shipping Address",
@@ -55,50 +58,82 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           const FancyRowWidget(
             labelText: "Order Summary",
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class FancyRowWidget extends StatelessWidget {
-  final String labelText;
-  const FancyRowWidget({
-    super.key,
-    required this.labelText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            labelText,
-            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400),
+          ShopItemWidget(
+            clothDetail: const [
+              "Green casual top",
+              "L",
+              "\$15",
+            ],
+            imageLink: shirt1Url,
           ),
-          ElevatedButton(
-            onPressed: () {},
-            style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Color(0xff191970))),
-            child: Text(
-              "Edit",
-              style: TextStyle(color: Colors.white, fontSize: 16.sp),
-            ),
-          )
+          ShopItemWidget(
+            clothDetail: const [
+              "Blue casual top",
+              "XL",
+              "\$25",
+            ],
+            imageLink: shirt2Url,
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //Column 1
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Subtotal",
+                  ).withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
+                  const Text(
+                    "Discount",
+                  ).withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
+                  const Text("Total")
+                      .withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400)
+                ],
+              ),
+              //Column 2
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    "\$40",
+                  ).withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
+                  const Text(
+                    "\$0",
+                  ).withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
+                  const Text("\$40")
+                      .withStyle(fontSize: 20.sp, fontWeight: FontWeight.w400)
+                ],
+              )
+            ],
+          ).withPadding(const EdgeInsets.symmetric(horizontal: 15)),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.15,
+          ),
+          const ShopButton(text: "Proceed to Payment")
         ],
       ),
     );
   }
 }
 
-extension TextStyleExtension on Widget {
-  Widget withStyle(TextStyle style) {
-    return DefaultTextStyle(
-      style: style,
-      child: this,
-    );
-  }
+// extension TextExtension on Text {
+//   Text customText() {
+//     return Text(
+//       data ?? '',
+//       style: style?.copyWith(fontSize: 20, fontWeight: FontWeight.w400),
+//     );
+//   }
+// }
+
+extension CustomText on Text {
+  Text withStyle({
+    required double fontSize,
+    required FontWeight fontWeight,
+  }) =>
+      Text(
+        data ?? "",
+        style: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
+      );
 }

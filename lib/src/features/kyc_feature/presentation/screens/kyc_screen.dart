@@ -4,7 +4,7 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:opacity/src/features/kyc_feature/presentation/widgets/kyc_button.dart';
 import 'package:opacity/src/routing/route_paths.dart';
 
