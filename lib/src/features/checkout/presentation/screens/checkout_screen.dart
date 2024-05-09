@@ -6,6 +6,7 @@ import 'package:opacity/src/features/checkout/presentation/widgets/fancy_row_wid
 import 'package:opacity/src/features/checkout/presentation/widgets/shop_button.dart';
 import 'package:opacity/src/features/checkout/presentation/widgets/shop_item_widget.dart';
 import 'package:opacity/src/features/kyc_feature/presentation/screens/kyc_screen.dart';
+import 'package:opacity/src/routing/route_paths.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -109,9 +110,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             ],
           ).withPadding(const EdgeInsets.symmetric(horizontal: 15)),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: (MediaQuery.of(context).size.height * 0.12).h,
           ),
-          const ShopButton(text: "Proceed to Payment")
+          GestureDetector(
+            onTap: () => context.pushNamed(RoutePaths.paymentScreenRoute),
+            child: const ShopButton(text: "Proceed to Payment"))
         ],
       ),
     );
