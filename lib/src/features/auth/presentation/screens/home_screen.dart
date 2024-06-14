@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
           FloatingActionButton.small(
             heroTag: null,
             child: const Icon(Icons.support_agent),
-            onPressed: () {},
+            onPressed: () => context.pushNamed(RoutePaths.chatScreenRoute),
           ),
           FloatingActionButton.small(
             heroTag: null,

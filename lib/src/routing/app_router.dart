@@ -4,6 +4,7 @@ import 'package:opacity/src/features/auth/presentation/screens/home_screen.dart'
 import 'package:opacity/src/features/auth/presentation/screens/landing_screen.dart';
 import 'package:opacity/src/features/auth/presentation/screens/register_screen.dart';
 import 'package:opacity/src/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:opacity/src/features/chat/presentation/chat_screen.dart';
 import 'package:opacity/src/features/checkout/presentation/screens/checkout_screen.dart';
 import 'package:opacity/src/features/checkout/presentation/screens/payment_screen.dart';
 import 'package:opacity/src/features/kyc_feature/presentation/screens/bank_details_screen.dart';
@@ -64,6 +65,11 @@ final appRouter = GoRouter(
       name: RoutePaths.paymentScreenRoute,
       path: '/${RoutePaths.paymentScreenRoute}',
       builder: (context, state) => const PaymentScreen(),
+    ),
+    GoRoute(
+      name: RoutePaths.chatScreenRoute,
+      path: '/${RoutePaths.chatScreenRoute}',
+      builder: (context, state) => const ChatPage(),
     ),
   ],
 );

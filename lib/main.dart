@@ -11,6 +11,7 @@ void main() async {
   await Supabase.initialize(
     url: Env.url,
     anonKey: Env.apiKey,
+    
   );
   runApp(const ProviderScope(
     child: MyApp(),

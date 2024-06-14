@@ -9,4 +9,5 @@ class RoutePaths {
   static String bankDetailsScreenRoute = 'bankdetails-screen-route';
   static String checkoutScreenRoute = 'checkout-screen-route';
   static String paymentScreenRoute = 'payment-screen-route';
+  static String chatScreenRoute = 'chat-screen-route';
 }
